@@ -1,0 +1,21 @@
+name: semel
+version: 0.1.0
+
+authors:
+  - Josua Schmid <josua.schmid@renuo.ch>
+
+targets:
+  renuo-ots:
+    main: src/semel.cr
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+  spec-kemal:
+    github: kemalcr/spec-kemal
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+
+crystal: 1.0.0
+
+license: AGPL

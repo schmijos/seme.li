@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <title>Semel Secure Message</title>
+  <style>
+    textarea, select {
+      width: 100%;
+    }
+  </style>
+</head>
+<script id="script-global">
+  if (!window.isSecureContext) {
+    alert('Insecure! Please visit with HTTPS');
+    window.history.back();
+  }
+</script>
+<body>
+
+<header>
+  <h1>Semel Secure Message</h1>
+</header>
+
+<%= content %>
+
+<footer>
+  <p>Semper Semel Simplex</p>
+</footer>
+</body>
+</html>
