@@ -25,3 +25,7 @@ TODO: Write development instructions here
 ## Contributors
 
 - [Josua Schmid](https://github.com/schmijos) - creator and maintainer
+
+## License
+
+2021 Copyright by Josua Schmid, published under the AGPL license
