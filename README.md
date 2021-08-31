@@ -2,29 +2,36 @@
 
 Share secrets once and with expiry
 
+## Prerequisites
+
+* Crystal 1.1
+* SQLite3
+
 ## Installation
 
-TODO: Write installation instructions here
+```sh
+shards install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```sh
+bin/run
+```
 
 ## Development
 
-TODO: Write development instructions here
+```sh
+bin/check
+```
 
 ## Contributing
 
-1. Fork it (<https://github.com/schmijos/kemal-sample/fork>)
+1. Fork it (<https://github.com/schmijos/seme.li)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-
-## Contributors
-
-- [Josua Schmid](https://github.com/schmijos) - creator and maintainer
 
 ## License
 
