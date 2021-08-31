@@ -1,8 +1,10 @@
-# Secure Message – Semper Semel Simplex!
+# Semel Secure Message
 
 Visit [seme.li](https://seme.li) to share expiring secrets once.
 Encryption and decryption is done only in the browser.
 No secrets reach the server.
+
+_Semper Semel Simplex!_
 
 ## Prerequisites
 
