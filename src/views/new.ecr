@@ -45,7 +45,10 @@
   <script id="script-dom">
     function plaintext()        { return document.getElementById('plaintext').value; }
     function expiresInSeconds() { return parseInt(document.getElementById('expires-in-seconds').value); }
-    function showSharable(url)  { document.getElementById('sharable').innerText = url; }
+    function showSharable(url)  {
+      document.getElementById('sharable').innerText = url;
+      document.getElementById('sharable-container').style.removeProperty('display');
+    }
   </script>
 
   <label for="plaintext">Secret to share:</label>
@@ -67,8 +70,9 @@
   </button>
 </section>
 
-<section id="sharable">
-
+<section id="sharable-container" style="display: none">
+  <label for="sharable">URL to access secret once:</label>
+  <textarea id="sharable" disabled></textarea>
 </section>
 
 <section id="explanation">
@@ -80,7 +84,7 @@
       Do you trust your browser? Well… that's another question.
     </p>
     <pre id="code-detail"></pre>
-    <p>Notes for nerds:</p>
+    <p><strong>Notes for nerds:</strong></p>
     <ul>
       <li>This is one single HTML page. All code is here and unminified.</li>
       <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>

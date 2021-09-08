@@ -1,4 +1,4 @@
-<h2>Probe for secret exactly once</h2>
+<h2>Probe the secret exactly once</h2>
 
 <section id="form">
   <script id="script-lib">
@@ -50,7 +50,10 @@
     function secretIdFromHash()        { return location.hash.split('#').filter(x => x)[0]; }
     function secretKeyFromHash()       { return location.hash.split('#').filter(x => x)[1]; }
     function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
-    function showPlaintext(plaintext)  { document.getElementById('plaintext').innerText = plaintext; }
+    function showPlaintext(plaintext)  {
+      document.getElementById('plaintext').innerText = plaintext;
+      document.getElementById('plaintext-container').style.removeProperty('display');
+    }
   </script>
 
   <div style="display: none" onload="if(!secretKeyFromHash()){ this.style.display = 'block'; }">
@@ -63,6 +66,7 @@
   </button>
 </section>
 
-<section id="plaintext">
-
+<section id="plaintext-container" style="display: none">
+  <label for="plaintext">Plaintext:</label>
+  <textarea id="plaintext" disabled></textarea>
 </section>
