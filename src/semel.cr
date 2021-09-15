@@ -28,7 +28,7 @@ delete "/consume/:id" do |env|
   secret_id = env.params.url["id"].as(String)
   ciphertext = storage.consume(secret_id)
 
-  env.response.status_code = 404 unless ciphertext
+  env.response.status_code = 400 unless ciphertext # actually 404, but Kemal then renders HTML?!
 
   { ciphertext: ciphertext }.to_json
 end

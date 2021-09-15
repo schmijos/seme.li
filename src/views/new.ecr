@@ -30,7 +30,7 @@
     async function storeRemotely(ciphertext, expiresInSeconds) {
       const response = await fetch('/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({ ciphertext: to_base64(ciphertext), expires_in_seconds: expiresInSeconds })
       });
 
@@ -94,6 +94,7 @@
         of the URL. To omit this risk, you can send the link and the hash to the receiver separately. If a secret link
         is opened without the second part of the hash attached, I show a password input field.
         In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
+      <li>You actually have to trust me with the expiry feature. I could simply keep the ciphertext forever.</li>
     </ul>
   </details>
 </section>

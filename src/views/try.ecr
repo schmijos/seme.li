@@ -17,7 +17,7 @@
     async function consumeRemotely(id) {
       const response = await fetch(`/consume/${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       });
 
       return await response.json();
@@ -54,15 +54,20 @@
       document.getElementById('plaintext').innerText = plaintext;
       document.getElementById('plaintext-container').style.removeProperty('display');
     }
+    document.addEventListener('DOMContentLoaded', function() {
+      if(!secretKeyFromHash()) {
+        document.getElementById('secret-key-container').style.display = 'block';
+      }
+    });
   </script>
 
-  <div style="display: none" onload="if(!secretKeyFromHash()){ this.style.display = 'block'; }">
+  <div id="secret-key-container" style="display: none">
     <label for="secret-key">Secret key:</label>
     <input type="text" id="secret-key">
   </div>
 
   <button id="submit" onclick="consumeAndDecrypt()">
-    Try reveal!
+    Try to reveal secret!
   </button>
 </section>
 
