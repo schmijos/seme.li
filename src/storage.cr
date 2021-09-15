@@ -5,7 +5,7 @@ class Storage
   @db : DB::Database
 
   def initialize(scope : String)
-    @db = DB.open("sqlite3://./#{scope}.db")
+    @db = DB.open("sqlite3://./data/#{scope}.db")
     migrate
   end
 
