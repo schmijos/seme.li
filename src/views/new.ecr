@@ -5,7 +5,7 @@
     async function encryptAndStore() {
       const { key, ciphertext } = await encryptLocally(plaintext());
       const { url } = await storeRemotely(ciphertext, expiresInSeconds());
-      showSharable(`${url}#${to_base64(key)}`);
+      showSharable(`${url}:${to_base64(key)}`);
     }
 
     async function encryptLocally(plaintext) {
@@ -88,11 +88,13 @@
     <ul>
       <li>This is one single HTML page. All code is here and unminified.</li>
       <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>
-      <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser.
-        It contains the encryption key.</li>
+      <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser
+        when you request a web page.
+        It contains ID and encryption key (like <code>https://seme.li/try#&ltID&gt:&ltsecret&gt</code>).
+        The ID is used to query the correct record from the backend. The encryption key stays on your machine</li>
       <li>Theoretically I could show the consumer of the secret a custom tailored web page to steal the secret part
-        of the URL. To omit this risk, you can send the link and the hash to the receiver separately. If a secret link
-        is opened without the second part of the hash attached, I show a password input field.
+        of the URL. To omit this risk, you can split the generated link at the colon. If a secret link
+        is opened without the second part after the colon attached, I show a password input field.
         In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
       <li>You actually have to trust me with the expiry feature. I could simply keep the ciphertext forever.</li>
     </ul>
