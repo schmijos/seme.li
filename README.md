@@ -2,7 +2,7 @@
 
 Visit [seme.li](https://seme.li) to share expiring secrets once.
 Encryption and decryption is done only in the browser.
-No secrets reach the server.
+No secret reaches the server.
 
 _Semper Semel Simplex!_
 
