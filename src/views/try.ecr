@@ -51,7 +51,7 @@
     function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
     function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
     function showPlaintext(plaintext)  {
-      document.getElementById('plaintext').innerText = plaintext;
+      document.getElementById('plaintext').innerText = plaintext.replaceAll('<br>', '\n');
       document.getElementById('plaintext-container').style.removeProperty('display');
     }
     document.addEventListener('DOMContentLoaded', function() {
