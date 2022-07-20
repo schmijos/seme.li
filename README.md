@@ -8,7 +8,7 @@ _Semper Semel Simplex!_
 
 ## Prerequisites
 
-* Crystal 1.1
+* Crystal >=1.1
 * SQLite3
 
 ## Installation

@@ -1,0 +1,18 @@
+#!/bin/sh
+set -euo pipefail
+IFS=$'\n\t'
+
+expected_version="$(head -n 1 .tool-versions | cut -d' ' -f2)"
+actual_version="$(crystal --version)"
+if [ ! $? -eq 0 ]; then
+  echo "Is Crystal installed? You can do it with 'asdf install'."
+  exit 1
+fi
+
+echo $actual_version | grep $expected_version
+if [ ! $? -eq 0 ]; then
+  echo "Found $actual_version, but expected $expected_version"
+  exit 2
+fi
+
+shards install
