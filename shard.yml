@@ -5,7 +5,7 @@ authors:
   - Josua Schmid <josua.schmid@renuo.ch>
 
 targets:
-  renuo-ots:
+  seme.li:
     main: src/semel.cr
 
 dependencies:

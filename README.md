@@ -6,27 +6,33 @@ No secret reaches the server.
 
 _Semper Semel Simplex!_
 
-## Prerequisites
+## Run your own
 
-* Crystal >=1.1
-* SQLite3
+This is a _12factor_ app using the Apt and Crystal Heroku buildpacks.
+Installation is as easy as clicking this button. 
 
-## Installation
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-```sh
-shards install
-```
-
-## Usage
-
-```sh
-bin/run
-```
+Be aware though that you'll
+[loose your sqlite database often](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem)
+if you use Heroku. You may want to hook in a Postgres database
+or use [Dokku with a volume](https://dokku.com/docs/advanced-usage/persistent-storage/).
+Sticking to a SQLite database also means running on 1 dyno only.
 
 ## Development
 
+Install required prerequisites:
+
+* Crystal >=1.1
+* SQLite3
+* [mkcert](https://github.com/FiloSottile/mkcert)
+
+Then run those convenient scripts from the project root:
+
 ```sh
+bin/setup
 bin/check
+bin/run
 ```
 
 ## Contributing
@@ -39,4 +45,4 @@ bin/check
 
 ## License
 
-2021 Copyright by Josua Schmid, published under the AGPL license
+2021-2022 Copyright by Josua Schmid, published under the AGPL license

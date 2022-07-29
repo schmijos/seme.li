@@ -1,3 +1,5 @@
 #!/bin/sh
 
-crystal run src/semel.cr
+crystal run src/semel.cr -- \
+  --ssl --ssl-key-file data/development_key.pem --ssl-cert-file data/development_cert.pem \
+  --bind 127.0.0.1

@@ -3,7 +3,7 @@ require "../src/storage"
 
 describe Storage do
   after_each do
-    File.delete("./data/test.db")
+    File.delete?("./data/test.db")
   end
 
   describe "#put" do

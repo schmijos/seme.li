@@ -1,6 +1,8 @@
 require "kemal"
 require "./storage"
 
+serve_static false
+
 storage = Storage.new(ENV["KEMAL_ENV"]? || "development")
 
 get "/" do

@@ -1,0 +1,6 @@
+{
+  "name": "seme.li",
+  "description": "Share expiring secrets once with seme.li",
+  "repository": "https://github.com/schmijos/seme.li",
+  "keywords": ["crystal", "crypto", "ots"]
+}
