@@ -6,39 +6,43 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%20style='filter:hue-rotate(42deg);'%3E🔒%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
   <style>
     body {
-      font-family: Georgia, Times, "Times New Roman", serif;
+      font-family: "Inter", sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.5);
     }
 
-    input[type=text], select, textarea {
+    h1 {
+      font-size: 28px;
+      color: rgba(0, 0, 0, 1.0);
+    }
+
+    h2 {
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    label {
+      color: rgba(0, 0, 0, 1.0);
+    }
+
+    input[type=text], select, textarea, button {
       width: 100%;
       padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-top: 6px;
-      margin-bottom: 16px;
-      resize: vertical;
-    }
-
-    button {
-      background-color: #0478AA;
-      color: white;
-      padding: 12px 20px;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
+      box-sizing: border-box;
       cursor: pointer;
-      font-weight: bold;
     }
-
-    button:hover {
-      background-color: #4578AA;
+    select, textarea {
+      background: rgba(0, 0, 0, 0.06);
     }
-
-    section {
-      border-radius: 5px;
-      background-color: #f2f2f2;
-      padding: 20px;
-      margin: 10px 0 10px 0;
+    textarea {
+        resize: vertical;
+    }
+    button {
+      color: white;
+      background: rgba(0, 0, 0, 1.0);
     }
   </style>
 </head>
