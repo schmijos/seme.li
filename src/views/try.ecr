@@ -1,77 +1,83 @@
-<h2>Probe the secret exactly once</h2>
+<header id="form-try">
+  <%= render("src/images/logo.svg") %>
+  <h1>Semel Secure Message</h1>
+  <span>Retrieve secret passwords or messages. Once.</span>
+</header>
 
-<section id="form">
-  <script id="script-lib">
-    async function consumeAndDecrypt() {
-      const { ciphertext } = await consumeRemotely(secretIdFromHash());
+<main>
+  <section id="form-try">
+    <script id="script-lib">
+      async function consumeAndDecrypt() {
+        const { ciphertext } = await consumeRemotely(secretIdFromHash());
 
-      if(ciphertext) {
-        const key = secretKeyFromHash() || secretKeyFromInput();
-        const plaintext = await decryptLocally(ciphertext, key);
-        showPlaintext(plaintext);
-      } else {
-        showPlaintext('Secret doesn\'t exist (anymore).');
+        if(ciphertext) {
+          const key = secretKeyFromHash() || secretKeyFromInput();
+          const plaintext = await decryptLocally(ciphertext, key);
+          showPlaintext(plaintext);
+        } else {
+          showPlaintext('Secret doesn\'t exist (anymore).');
+        }
       }
-    }
 
-    async function consumeRemotely(id) {
-      const response = await fetch(`/consume/${id}`, {
-        method: 'DELETE',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      async function consumeRemotely(id) {
+        const response = await fetch(`/consume/${id}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        });
+
+        return await response.json();
+      }
+
+      async function decryptLocally(ciphertext, secretKey) {
+        const key = await crypto.subtle.importKey(
+          'raw',
+          to_buffer(secretKey),
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["decrypt"]
+        );
+
+        const plaintext = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: new Uint8Array(12) }, // fixed IV because every key is used only once
+          key,
+          to_buffer(ciphertext)
+        );
+
+        return (new TextDecoder).decode(plaintext)
+      }
+
+      function to_buffer(base64str) {
+        return Uint8Array.from(atob(base64str), c => c.charCodeAt(0))
+      }
+    </script>
+
+    <script id="script-dom">
+      function secretIdFromHash()        { return location.hash.substring(1).split(':').filter(x => x)[0]; }
+      function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
+      function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
+      function showPlaintext(plaintext)  {
+        document.getElementById('plaintext').value = plaintext;
+        document.getElementById('plaintext-container').style.removeProperty('display');
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        if(!secretKeyFromHash()) {
+          document.getElementById('secret-key-container').style.display = 'block';
+        }
       });
+    </script>
 
-      return await response.json();
-    }
+    <div id="secret-key-container" style="display: none">
+      <label for="secret-key">Secret key:</label>
+      <input type="text" id="secret-key">
+    </div>
 
-    async function decryptLocally(ciphertext, secretKey) {
-      const key = await crypto.subtle.importKey(
-        'raw',
-        to_buffer(secretKey),
-        { name: "AES-GCM", length: 256 },
-        true,
-        ["decrypt"]
-      );
+    <button id="submit" onclick="consumeAndDecrypt()">
+      Try to reveal secret!
+    </button>
+  </section>
 
-      const plaintext = await window.crypto.subtle.decrypt(
-        { name: "AES-GCM", iv: new Uint8Array(12) }, // fixed IV because every key is used only once
-        key,
-        to_buffer(ciphertext)
-      );
-
-      return (new TextDecoder).decode(plaintext)
-    }
-
-    function to_buffer(base64str) {
-      return Uint8Array.from(atob(base64str), c => c.charCodeAt(0))
-    }
-  </script>
-
-  <script id="script-dom">
-    function secretIdFromHash()        { return location.hash.substring(1).split(':').filter(x => x)[0]; }
-    function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
-    function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
-    function showPlaintext(plaintext)  {
-      document.getElementById('plaintext').value = plaintext;
-      document.getElementById('plaintext-container').style.removeProperty('display');
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      if(!secretKeyFromHash()) {
-        document.getElementById('secret-key-container').style.display = 'block';
-      }
-    });
-  </script>
-
-  <div id="secret-key-container" style="display: none">
-    <label for="secret-key">Secret key:</label>
-    <input type="text" id="secret-key">
-  </div>
-
-  <button id="submit" onclick="consumeAndDecrypt()">
-    Try to reveal secret!
-  </button>
-</section>
-
-<section id="plaintext-container" style="display: none">
-  <label for="plaintext">Plaintext:</label>
-  <textarea id="plaintext" disabled></textarea>
-</section>
+  <section id="plaintext-container" style="display: none">
+    <label for="plaintext">Plaintext:</label>
+    <textarea id="plaintext" disabled></textarea>
+  </section>
+</main>

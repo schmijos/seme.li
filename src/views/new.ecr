@@ -1,102 +1,114 @@
-<h2>Persist secret payload</h2>
+<header id="form-new">
+  <%= render("src/images/logo.svg") %>
+  <h1>Semel Secure Message</h1>
+  <span>Share secret passwords or messages. Once.</span>
+</header>
 
-<section id="form">
-  <script id="script-lib">
-    async function encryptAndStore() {
-      const { key, ciphertext } = await encryptLocally(plaintext());
-      const { url } = await storeRemotely(ciphertext, expiresInSeconds());
-      showSharable(`${url}:${to_base64(key)}`);
-    }
+<main>
+  <section id="form-new">
+    <script id="script-lib">
+      async function encryptAndStore() {
+        const { key, ciphertext } = await encryptLocally(plaintext());
+        const { url } = await storeRemotely(ciphertext, expiresInSeconds());
+        showSharable(`${url}:${to_base64(key)}`);
+      }
 
-    async function encryptLocally(plaintext) {
-      const key = await window.crypto.subtle.generateKey(
-        { name: "AES-GCM", length: 256 },
-        true,
-        ["encrypt"]
-      );
+      async function encryptLocally(plaintext) {
+        const key = await window.crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt"]
+        );
 
-      const ciphertext = await window.crypto.subtle.encrypt(
-        { name: "AES-GCM", iv: new Uint8Array(12) }, // fixed IV because every key is used only once
-        key,
-        (new TextEncoder).encode(plaintext)
-      );
+        const ciphertext = await window.crypto.subtle.encrypt(
+          { name: "AES-GCM", iv: new Uint8Array(12) }, // fixed IV because every key is used only once
+          key,
+          (new TextEncoder).encode(plaintext)
+        );
 
-      return {
-        key: await crypto.subtle.exportKey('raw', key),
-        ciphertext
-      };
-    }
+        return {
+          key: await crypto.subtle.exportKey('raw', key),
+          ciphertext
+        };
+      }
 
-    async function storeRemotely(ciphertext, expiresInSeconds) {
-      const response = await fetch('/create', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ciphertext: to_base64(ciphertext), expires_in_seconds: expiresInSeconds })
-      });
+      async function storeRemotely(ciphertext, expiresInSeconds) {
+        const response = await fetch('/create', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ciphertext: to_base64(ciphertext), expires_in_seconds: expiresInSeconds })
+        });
 
-      return await response.json();
-    }
+        return await response.json();
+      }
 
-    function to_base64(buffer) {
-      return btoa(String.fromCharCode(...new Uint8Array(buffer)))
-    }
-  </script>
+      function to_base64(buffer) {
+        return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+      }
+    </script>
 
-  <script id="script-dom">
-    function plaintext()        { return document.getElementById('plaintext').value; }
-    function expiresInSeconds() { return parseInt(document.getElementById('expires-in-seconds').value); }
-    function showSharable(url)  {
-      document.getElementById('sharable').innerText = url;
-      document.getElementById('sharable-container').style.removeProperty('display');
-    }
-  </script>
+    <script id="script-dom">
+      function plaintext()        { return document.getElementById('plaintext').value; }
+      function expiresInSeconds() { return parseInt(document.getElementById('expires-in-seconds').value); }
+      function showSharable(url)  {
+        document.getElementById('sharable').innerText = url;
+        document.getElementById('sharable-container').style.removeProperty('display');
+      }
+    </script>
 
-  <label for="plaintext">Secret to share:</label>
-  <textarea id="plaintext"></textarea>
+    <label for="plaintext">Secret to share</label>
+    <textarea id="plaintext" placeholder="My secret…" rows="5"></textarea>
 
-  <label for="expires-in-seconds">Expires in:</label>
-  <select id="expires-in-seconds">
-    <option value="900">15 minutes</option>
-    <option value="14400">4 hours</option>
-    <option value="28800">8 hours</option>
-    <option value="86400">24 hours</option>
-    <option value="259200">3 days</option>
-    <option value="604800">7 days</option>
-    <option value="2592000">30 days</option>
-  </select>
+    <div style="display: flex; align-items: flex-end; column-gap: 20px">
+      <div style="flex-basis: 0; flex-grow: 1">
+        <label for="expires-in-seconds">Expires in</label>
+        <select id="expires-in-seconds">
+          <option value="900">15 minutes</option>
+          <option value="14400">4 hours</option>
+          <option value="28800">8 hours</option>
+          <option value="86400">24 hours</option>
+          <option value="259200">3 days</option>
+          <option value="604800">7 days</option>
+          <option value="2592000">30 days</option>
+        </select>
+      </div>
 
-  <button id="submit" onclick="encryptAndStore()">
-    Share once!
-  </button>
-</section>
+      <div style="flex-basis: 0; flex-grow: 1">
+        <button id="submit" onclick="encryptAndStore()">
+          Share once
+        </button>
+      </div>
+    </div>
+  </section>
 
-<section id="sharable-container" style="display: none">
-  <label for="sharable">URL to access secret once:</label>
-  <textarea id="sharable" disabled></textarea>
-</section>
+  <section id="sharable-container" style="display: none">
+    <label for="sharable">URL to access secret once:</label>
+    <textarea id="sharable" disabled></textarea>
+  </section>
 
-<section id="explanation">
-  <h2>Do you need to trust me?</h2>
-  <details ontoggle="document.getElementById('code-detail').textContent = document.getElementById('script-lib').textContent">
-    <summary><strong>No.</strong> Have a look at the following JS code.</summary>
-    <p>
-      I use your browser's crypto API to encrypt your secrets before I send the ciphertext to the backend.<br>
-      Do you trust your browser? Well… that's another question.
-    </p>
-    <pre id="code-detail"></pre>
-    <p><strong>Notes for nerds:</strong></p>
-    <ul>
-      <li>This is one single HTML page. All code is here and unminified.</li>
-      <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>
-      <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser
-        when you request a web page.
-        It contains ID and encryption key (like <code>https://seme.li/try#&ltID&gt:&ltsecret&gt</code>).
-        The ID is used to query the correct record from the backend. The encryption key stays on your machine</li>
-      <li>Theoretically I could show the consumer of the secret a custom tailored web page to steal the secret part
-        of the URL. To omit this risk, you can split the generated link at the colon. If a secret link
-        is opened without the second part after the colon attached, I show a password input field.
-        In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
-      <li>You actually have to trust me with the expiry feature. I could simply keep the ciphertext forever.</li>
-    </ul>
-  </details>
-</section>
+  <section id="explanation">
+    <h2>Do you need to trust me?</h2>
+    <details ontoggle="document.getElementById('code-detail').textContent = document.getElementById('script-lib').textContent.replaceAll('      ', '')">
+      <summary><strong>No.</strong> Click and have a look at this Javascript code.</summary>
+      <p>
+        I use your browser's crypto API to encrypt your secrets before I send the ciphertext to the backend.<br>
+        Do you trust your browser? Well… that's another question.
+      </p>
+      <pre id="code-detail"></pre>
+      <p><strong>Notes for nerds:</strong></p>
+      <ul>
+        <li>This is one single HTML page. All code is here and unminified.</li>
+        <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>
+        <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser
+          when you request a web page.
+          It contains ID and encryption key (like <code>https://seme.li/try#&ltID&gt:&ltsecret&gt</code>).
+          The ID is used to query the correct record from the backend. The encryption key stays on your machine</li>
+        <li>Theoretically I could show the consumer of the secret a custom tailored web page to steal the secret part
+          of the URL. To omit this risk, you can split the generated link at the colon. If a secret link
+          is opened without the second part after the colon attached, I show a password input field.
+          In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
+        <li>You actually have to trust me with the expiry feature. I could simply keep the ciphertext forever.</li>
+      </ul>
+    </details>
+  </section>
+</main>

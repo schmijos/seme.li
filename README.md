@@ -1,7 +1,7 @@
 # Semel Secure Message
 
 Visit [seme.li](https://seme.li) to share expiring secrets once.
-Encryption and decryption is done only in the browser.
+Encryption and decryption is done exclusively in the browser.
 No secret reaches the server.
 
 _Semper Semel Simplex!_
@@ -13,11 +13,13 @@ Installation is as easy as clicking this button.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Be aware though that you'll
-[loose your sqlite database often](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem)
-if you use Heroku. You may want to hook in a Postgres database
+> **Warning**
+> Be aware though that you'll
+[loose your SQLite database often](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem)
+if you use Heroku. You may want to hook into a Postgres database
 or use [Dokku with a volume](https://dokku.com/docs/advanced-usage/persistent-storage/).
-Sticking to a SQLite database also means running on 1 dyno only.
+on your own server.
+Sticking to a SQLite database also means that you can run on 1 "dyno" only.
 
 ## Development
 
