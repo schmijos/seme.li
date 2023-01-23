@@ -13,9 +13,10 @@
       margin: 0;
       height: 100vh;
 
-      font-family: "Inter", sans-serif;
+      font-family: "Arial", sans-serif;
       font-size: 18px;
-      font-weight: 400;
+      font-weight: 300;
+      line-height: 1.5;
       color: rgba(0, 0, 0, 0.5);
 
       display: grid;
@@ -52,6 +53,10 @@
     h2 {
       margin-top: 60px;
       font-size: 18px;
+      font-weight: 300;
+    }
+    a {
+      color: #000000;
     }
 
     header > span {
@@ -74,25 +79,37 @@
       box-sizing: border-box;
       cursor: pointer;
     }
-    select, textarea {
+    select {
+      font-size: 16px;
       background: rgba(0, 0, 0, 0.06);
     }
     textarea {
+      font-size: 20px;
+      background: rgba(0, 0, 0, 0.06);
       resize: vertical;
     }
     button {
+      font-size: 16px;
       color: white;
       background: rgba(0, 0, 0, 1.0);
+    }
+    #sharable {
+      border: 1px solid #000000;
+      font-size: 16px;
+      filter: blur(1px);
     }
 
     summary {
       cursor: pointer;
     }
+    pre {
+      font-size: 16px;
+    }
 
-    #form-new svg {
+    #form-new-header svg {
       transform: rotate(0);
     }
-    #form-try svg {
+    #form-try-header svg {
       transform: rotate(180deg);
     }
   </style>

@@ -1,5 +1,5 @@
-<header id="form-try">
-  <%= render("src/images/logo.svg") %>
+<header id="form-try-header">
+  <a href="/"><%= render("src/images/logo.svg") %></a>
   <h1>Semel Secure Message</h1>
   <span>Retrieve secret passwords or messages. Once.</span>
 </header>
@@ -15,7 +15,7 @@
           const plaintext = await decryptLocally(ciphertext, key);
           showPlaintext(plaintext);
         } else {
-          showPlaintext('Secret doesn\'t exist (anymore).');
+          showPlaintext('Sorry, but this secret doesn\'t exist (anymore).');
         }
       }
 
@@ -58,6 +58,7 @@
       function showPlaintext(plaintext)  {
         document.getElementById('plaintext').value = plaintext;
         document.getElementById('plaintext-container').style.removeProperty('display');
+        document.getElementById('form-try').remove();
       }
       document.addEventListener('DOMContentLoaded', function() {
         if(!secretKeyFromHash()) {
@@ -67,17 +68,17 @@
     </script>
 
     <div id="secret-key-container" style="display: none">
-      <label for="secret-key">Secret key:</label>
+      <label for="secret-key">Secret key</label>
       <input type="text" id="secret-key">
     </div>
 
     <button id="submit" onclick="consumeAndDecrypt()">
-      Try to reveal secret!
+      Reveal secret!
     </button>
   </section>
 
   <section id="plaintext-container" style="display: none">
-    <label for="plaintext">Plaintext:</label>
+    <label for="plaintext">Plaintext</label>
     <textarea id="plaintext" disabled></textarea>
   </section>
 </main>

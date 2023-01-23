@@ -1,5 +1,5 @@
-<header id="form-new">
-  <%= render("src/images/logo.svg") %>
+<header id="form-new-header">
+  <a href="/"><%= render("src/images/logo.svg") %></a>
   <h1>Semel Secure Message</h1>
   <span>Share secret passwords or messages. Once.</span>
 </header>
@@ -21,7 +21,8 @@
         );
 
         const ciphertext = await window.crypto.subtle.encrypt(
-          { name: "AES-GCM", iv: new Uint8Array(12) }, // fixed IV because every key is used only once
+          // Using fixed IV because every key is used only once
+          { name: "AES-GCM", iv: new Uint8Array(12) },
           key,
           (new TextEncoder).encode(plaintext)
         );
@@ -35,8 +36,14 @@
       async function storeRemotely(ciphertext, expiresInSeconds) {
         const response = await fetch('/create', {
           method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ciphertext: to_base64(ciphertext), expires_in_seconds: expiresInSeconds })
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ciphertext: to_base64(ciphertext),
+            expires_in_seconds: expiresInSeconds
+          })
         });
 
         return await response.json();
@@ -53,6 +60,16 @@
       function showSharable(url)  {
         document.getElementById('sharable').innerText = url;
         document.getElementById('sharable-container').style.removeProperty('display');
+      }
+      function copyUrlToClipboard(copier) {
+        const sharable = document.getElementById('sharable')
+        sharable.select();
+        sharable.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(sharable.value);
+
+        const oldText = copier.innerText;
+        copier.innerText = 'Copied!';
+        setTimeout(() => copier.innerText = oldText, 1000);
       }
     </script>
 
@@ -82,32 +99,41 @@
   </section>
 
   <section id="sharable-container" style="display: none">
-    <label for="sharable">URL to access secret once:</label>
+    <label for="sharable">Share the URL. It can be accessed only once.</label>
     <textarea id="sharable" disabled></textarea>
+    <button onclick="copyUrlToClipboard(this)">Copy URL to clipboard</button>
   </section>
 
   <section id="explanation">
     <h2>Do you need to trust me?</h2>
-    <details ontoggle="document.getElementById('code-detail').textContent = document.getElementById('script-lib').textContent.replaceAll('      ', '')">
-      <summary><strong>No.</strong> Click and have a look at this Javascript code.</summary>
+    <details ontoggle="document.getElementById('code-detail').textContent = document.getElementById('script-lib').textContent.replace(/^      /gm, '')">
+      <summary><strong>No.</strong> Click and read some code yourself.</summary>
       <p>
-        I use your browser's crypto API to encrypt your secrets before I send the ciphertext to the backend.<br>
-        Do you trust your browser? Well… that's another question.
+        I use your browser's crypto API to encrypt your secrets before I send the ciphertext to the backend.
+        Do you trust your browser? Well… that's another question. But at least you can inspect the code before
+        you type anything into the text area above.
       </p>
       <pre id="code-detail"></pre>
-      <p><strong>Notes for nerds:</strong></p>
+      <p><strong>Notes for nerds</strong></p>
       <ul>
         <li>This is one single HTML page. All code is here and unminified.</li>
         <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>
         <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser
           when you request a web page.
           It contains ID and encryption key (like <code>https://seme.li/try#&ltID&gt:&ltsecret&gt</code>).
-          The ID is used to query the correct record from the backend. The encryption key stays on your machine</li>
+          The ID is used to query the correct record from the backend. The encryption key stays on your machine.</li>
         <li>Theoretically I could show the consumer of the secret a custom tailored web page to steal the secret part
           of the URL. To omit this risk, you can split the generated link at the colon. If a secret link
           is opened without the second part after the colon attached, I show a password input field.
           In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
         <li>You actually have to trust me with the expiry feature. I could simply keep the ciphertext forever.</li>
+        <li>You can run your own backend. Find the source of this page on
+          <a href="https://github.com/schmijos/seme.li">GitHub</a>.</li>
+      </ul>
+      <p><strong>My financial dependencies</strong></p>
+      <ul>
+        <li><a href="https://www.renuo.ch/en/team/josua-schmid">Renuo AG</a> pays for my living.</li>
+        <li>I owe a mortgage to a bank.</li>
       </ul>
     </details>
   </section>
