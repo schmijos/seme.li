@@ -17,8 +17,9 @@ post "/create" do |env|
   env.response.content_type = "application/json"
 
   ciphertext = env.params.json["ciphertext"].as(String)
+  content_type = env.params.json["content_type"].as(String)
   expires_in_seconds = env.params.json["expires_in_seconds"].as(Int64)
-  secret_id = storage.put(ciphertext, Time.utc.to_unix + expires_in_seconds)
+  secret_id = storage.put(ciphertext, content_type, Time.utc.to_unix + expires_in_seconds)
 
   { url: "https://seme.li/try##{secret_id}" }.to_json
 end
@@ -28,11 +29,13 @@ delete "/consume/:id" do |env|
 
   storage.cut
   secret_id = env.params.url["id"].as(String)
-  ciphertext = storage.consume(secret_id)
+  result = storage.consume(secret_id)
 
-  env.response.status_code = 400 unless ciphertext # actually 404, but Kemal then renders HTML?!
+  halt env, 400, "{}" unless result # actually 404, but Kemal then renders HTML?!
 
-  { ciphertext: ciphertext }.to_json
+  ciphertext, content_type = result.as(Tuple(String, String))
+
+  { ciphertext: ciphertext, contentType: content_type }.to_json
 end
 
 Kemal.run

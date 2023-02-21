@@ -7,9 +7,22 @@
 <main>
   <section id="form-new">
     <script id="script-lib">
+      async function serializeFile(file) {
+        const content = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+
+        return JSON.stringify({ name: file.name, content: content });
+      }
+
       async function encryptAndStore() {
-        const { key, ciphertext } = await encryptLocally(plaintext());
-        const { url } = await storeRemotely(ciphertext, expiresInSeconds());
+        const [content, contentType] = !!plainfile() ? [await serializeFile(plainfile()), 'file'] : [plaintext(), 'text'];
+
+        const { key, ciphertext } = await encryptLocally(content);
+        const { url } = await storeRemotely(ciphertext, contentType, expiresInSeconds());
         showSharable(`${url}:${to_base64(key)}`);
       }
 
@@ -33,7 +46,7 @@
         };
       }
 
-      async function storeRemotely(ciphertext, expiresInSeconds) {
+      async function storeRemotely(ciphertext, contentType, expiresInSeconds) {
         const response = await fetch('/create', {
           method: 'POST',
           headers: {
@@ -42,6 +55,7 @@
           },
           body: JSON.stringify({
             ciphertext: to_base64(ciphertext),
+            content_type: contentType,
             expires_in_seconds: expiresInSeconds
           })
         });
@@ -56,6 +70,7 @@
 
     <script id="script-dom">
       function plaintext()        { return document.getElementById('plaintext').value; }
+      function plainfile()        { return document.getElementById('plainfile').files[0]; }
       function expiresInSeconds() { return parseInt(document.getElementById('expires-in-seconds').value); }
       function showSharable(url)  {
         document.getElementById('sharable').innerText = url;
@@ -75,6 +90,8 @@
 
     <label for="plaintext">Secret to share</label>
     <textarea id="plaintext" placeholder="My secret…" rows="5"></textarea>
+
+    <input id="plainfile" type="file">
 
     <div style="display: flex; align-items: flex-end; column-gap: 20px">
       <div style="flex-basis: 0; flex-grow: 1">

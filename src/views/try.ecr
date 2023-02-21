@@ -8,12 +8,19 @@
   <section id="form-try">
     <script id="script-lib">
       async function consumeAndDecrypt() {
-        const { ciphertext } = await consumeRemotely(secretIdFromHash());
+        const { ciphertext, contentType } = await consumeRemotely(secretIdFromHash());
 
         if(ciphertext) {
           const key = secretKeyFromHash() || secretKeyFromInput();
           const plaintext = await decryptLocally(ciphertext, key);
-          showPlaintext(plaintext);
+          if (contentType == 'text') {
+            showPlaintext(plaintext);
+          } else if (contentType == 'file') {
+            const file = JSON.parse(plaintext);
+            showPlainfile(file.name, file.content);
+          } else {
+            throw new Error("Invalid content type");
+          }
         } else {
           showPlaintext('Sorry, but this secret doesn\'t exist (anymore).');
         }
@@ -55,9 +62,15 @@
       function secretIdFromHash()        { return location.hash.substring(1).split(':').filter(x => x)[0]; }
       function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
       function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
-      function showPlaintext(plaintext)  {
+      function showPlaintext(plaintext) {
         document.getElementById('plaintext').value = plaintext;
         document.getElementById('plaintext-container').style.removeProperty('display');
+        document.getElementById('form-try').remove();
+      }
+      function showPlainfile(name, content) {
+        document.getElementById('plainfile').download = name;
+        document.getElementById('plainfile').href = content;
+        document.getElementById('plainfile').style.removeProperty('display');
         document.getElementById('form-try').remove();
       }
       document.addEventListener('DOMContentLoaded', function() {
@@ -81,4 +94,5 @@
     <label for="plaintext">Plaintext</label>
     <textarea id="plaintext" disabled></textarea>
   </section>
+  <a id="plainfile" download="" style="display: none" href="">Download</a>
 </main>
