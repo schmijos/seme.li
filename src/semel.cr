@@ -7,6 +7,8 @@ static_headers do |response, filepath, filestat|
 end
 
 storage = Storage.new(ENV["KEMAL_ENV"]? || "development")
+MAX_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 30 # 30 days
+MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https://t5k.org/curios/page.php?number_id=953
 
 get "/" do
   render "src/views/new.ecr", "src/views/layout.ecr"
@@ -21,6 +23,15 @@ post "/create" do |env|
 
   ciphertext = env.params.json["ciphertext"].as(String)
   expires_in_seconds = env.params.json["expires_in_seconds"].as(Int64)
+
+  if ciphertext.size > MAX_CIPHERTEXT_LENGTH
+    halt env, status_code: 400, response: ({ errors: [{ status: "400", detail: "Maximum #{MAX_CIPHERTEXT_LENGTH} characters allowed." }] }.to_json)
+  end
+
+  if expires_in_seconds > MAX_EXPIRES_IN_SECONDS
+    halt env, status_code: 400, response: ({ errors: [{ status: "400", detail: "Maximum expiriy time is #{MAX_EXPIRES_IN_SECONDS} seconds." }] }.to_json)
+  end
+
   secret_id = storage.put(ciphertext, Time.utc.to_unix + expires_in_seconds)
 
   { url: "https://#{env.request.headers["Host"]}/try##{secret_id}" }.to_json
@@ -33,7 +44,9 @@ delete "/consume/:id" do |env|
   secret_id = env.params.url["id"].as(String)
   ciphertext = storage.consume(secret_id)
 
-  env.response.status_code = 400 unless ciphertext # actually 404, but Kemal then renders HTML?!
+  unless ciphertext
+    halt env, status_code: 404, response: ({ errors: [{ status: "404", detail: "Secret never existed or already gone." }] }.to_json)
+  end
 
   { ciphertext: ciphertext }.to_json
 end
