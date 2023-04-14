@@ -9,6 +9,8 @@ MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https:
 
 before_all do |env|
   env.response.headers["Access-Control-Allow-Origin"] = "*"
+
+  # CSP rules are quite loose because 'self' is not allowed. If shit happens, then it's your browser (or extensions).
   env.response.headers["Content-Security-Policy"] = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none';"
 end
 
