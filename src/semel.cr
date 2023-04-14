@@ -2,13 +2,15 @@ require "kemal"
 require "./storage"
 
 serve_static false
-static_headers do |response, filepath, filestat|
-  response.headers.add("Access-Control-Allow-Origin", "*")
-end
 
 storage = Storage.new(ENV["KEMAL_ENV"]? || "development")
 MAX_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 30 # 30 days
 MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https://t5k.org/curios/page.php?number_id=953
+
+before_all do |env|
+  env.response.headers["Access-Control-Allow-Origin"] = "*"
+  env.response.headers["Content-Security-Policy"] = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none';"
+end
 
 get "/" do
   render "src/views/new.ecr", "src/views/layout.ecr"
