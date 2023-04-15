@@ -83,15 +83,17 @@
     <div style="display: flex; align-items: flex-end; column-gap: 20px">
       <div style="flex-basis: 0; flex-grow: 1">
         <label for="expires-in-seconds">Expires in</label>
-        <select id="expires-in-seconds">
-          <option value="900">15 minutes</option>
-          <option value="14400">4 hours</option>
-          <option value="28800">8 hours</option>
-          <option value="86400">24 hours</option>
-          <option value="259200">3 days</option>
-          <option value="604800">7 days</option>
-          <option value="2592000">30 days</option>
-        </select>
+        <div class="select-icon-hack">
+          <select id="expires-in-seconds">
+            <option value="900">15 minutes</option>
+            <option value="14400">4 hours</option>
+            <option value="28800">8 hours</option>
+            <option value="86400">24 hours</option>
+            <option value="259200">3 days</option>
+            <option value="604800">7 days</option>
+            <option value="2592000">30 days</option>
+          </select>
+        </div>
       </div>
 
       <div style="flex-basis: 0; flex-grow: 1">
@@ -103,13 +105,17 @@
   </section>
 
   <section id="sharable-container" style="display: none">
-    <label for="sharable">Share the URL. It can be accessed only once.</label>
+    <label for="sharable">
+      Share the URL.
+      <br>
+      <span>It can be accessed only once.</span>
+    </label>
     <textarea id="sharable" disabled></textarea>
     <button onclick="copyUrlToClipboard(this)">Copy URL to clipboard</button>
   </section>
 
   <section id="explanation">
-    <h2>Do you need to trust me?</h2>
+    <p>Do you need to trust me?</p>
     <details ontoggle="document.getElementById('code-detail').textContent = document.getElementById('script-lib').textContent.replace(/^      /gm, '')">
       <summary><strong>No.</strong> Click and read some code yourself.</summary>
       <p>

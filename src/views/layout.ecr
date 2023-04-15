@@ -7,17 +7,16 @@
   <style>
     * {
       box-sizing: border-box;
+      font-family: "Arial", sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.5);
     }
 
     body {
       margin: 0;
       height: 100vh;
-
-      font-family: "Arial", sans-serif;
-      font-size: 18px;
-      font-weight: 300;
-      line-height: 1.5;
-      color: rgba(0, 0, 0, 0.5);
 
       display: grid;
       grid-template-columns: auto minmax(100px, 684px) auto;
@@ -34,7 +33,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 50px 0;
+      margin: 121px 0 81px 0;
     }
     main {
       grid-area: main;
@@ -43,7 +42,7 @@
     footer {
       grid-area: footer;
       align-self: end;
-      margin: 50px 0;
+      margin: 121px 0;
     }
 
     h1 {
@@ -51,7 +50,6 @@
       color: rgba(0, 0, 0, 1.0);
     }
     h2 {
-      margin-top: 60px;
       font-size: 18px;
       font-weight: 300;
     }
@@ -60,50 +58,69 @@
     }
 
     header > span {
-        font-size: 18px;
-        color: rgba(0, 0, 0, 0.5);
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.5);
     }
 
     label {
       color: rgba(0, 0, 0, 1.0);
       display: block;
-      margin-top: 30px;
+      font-size: 18px;
+      margin-top: 50px;
       margin-bottom: 10px;
     }
 
     input[type=text], select, textarea, button {
       width: 100%;
       padding: 12px;
+      background: rgba(0, 0, 0, 0.06);
       border: none;
       border-radius: 10px;
       box-sizing: border-box;
     }
     select {
-      font-size: 16px;
-      background: rgba(0, 0, 0, 0.06);
       cursor: pointer;
+      height: 51px;
+      outline: none;
     }
     textarea {
-      font-size: 20px;
-      background: rgba(0, 0, 0, 0.06);
       resize: vertical;
+      outline: none;
+    }
+    select:focus, textarea:focus {
+      color: #000000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.9);
+      transition: box-shadow 0.3s ease-in-out;
     }
     button {
-      font-size: 16px;
       color: white;
       background: rgba(0, 0, 0, 1.0);
       cursor: pointer;
+      height: 51px;
     }
-    #sharable {
-      border: 1px solid #000000;
-      font-size: 16px;
+    #sharable-container button {
+      background: #F0F0F0;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 14px;
+      padding: 10px;
+      height: 37px;
+      line-height: 17px;
+    }
+    #sharable-container textarea {
+      margin: 5px 0;
+      font-family: monospace;
+    }
+    #explanation {
+      margin-top: 100px;
     }
 
     summary {
       cursor: pointer;
     }
     pre {
-      font-size: 16px;
+      font-family: monospace;
+      white-space: pre-wrap;
     }
 
     #form-new-header svg {
@@ -111,6 +128,22 @@
     }
     #form-try-header svg {
       transform: rotate(180deg);
+    }
+
+    select {
+      appearance: none;
+    }
+    .select-icon-hack {
+        position: relative;
+    }
+    .select-icon-hack:after {
+      content: "▼";
+      color: rgba(0, 0, 0, 0.25);
+      position: absolute;
+      right: 16px;
+      top: 13px;
+      pointer-events: none;
+      transform: scaleY(0.8);
     }
   </style>
 </head>
@@ -125,7 +158,7 @@
 <%= content %>
 
 <footer>
-  <p><em>Semper Semel Simplex</em></p>
+  <p>Semper Semel Simplex</p>
 </footer>
 </body>
 </html>
