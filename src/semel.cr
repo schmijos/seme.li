@@ -9,9 +9,22 @@ MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https:
 
 before_all do |env|
   env.response.headers["Access-Control-Allow-Origin"] = "*"
+end
 
-  # CSP rules are quite loose because 'self' is not allowed. If shit happens, then it's your browser (or extensions).
-  env.response.headers["Content-Security-Policy"] = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none';"
+before_get "/" do |env|
+  # Some considerations about these rather loose CSP rules:
+  # - All functionality is contained in the resulting HTML document.
+  #   No network requests happen, except for `POST /create` and `DELETE /consume/:id`.
+  # - The separation of script/style tags and inline scripts and styles is done deliberately.
+  #   This is to make it easier to audit the code.
+  # - The data URI is used for the favicon to avoid a network request. We cannot hash data URIs (yet).
+  env.response.headers["Content-Security-Policy"] = <<-CSP.gsub(/\n/, "")
+    default-src 'none';
+    script-src 'unsafe-inline';
+    style-src 'unsafe-inline';
+    connect-src 'self';
+    img-src data:;
+    CSP
 end
 
 get "/" do
