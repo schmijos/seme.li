@@ -7,6 +7,8 @@
 <main>
   <section id="form-try">
     <script id="script-lib">
+      // Here is the crypto library to create and store secrets. It doesn't touch the DOM.
+
       async function consumeAndDecrypt() {
         const { ciphertext } = await consumeRemotely(secretIdFromHash());
 
@@ -52,6 +54,8 @@
     </script>
 
     <script id="script-dom">
+      // Here is the DOM tooling. It doesn't act on its own but should be triggered by inline event handlers.
+
       function secretIdFromHash()        { return location.hash.substring(1).split(':').filter(x => x)[0]; }
       function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
       function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
@@ -68,6 +72,7 @@
     </script>
 
     <div id="secret-key-container" style="display: none">
+      <!-- This input can be used to manually provide the secret key if this document is not considered trustworthy -->
       <label for="secret-key">Secret key</label>
       <input type="text" id="secret-key">
     </div>
@@ -78,6 +83,7 @@
   </section>
 
   <section id="plaintext-container" style="display: none">
+    <!-- There's deliverately no copy-to-clipboard button here. No JavaScript should be needed after reveal -->
     <label for="plaintext">Plaintext</label>
     <textarea id="plaintext" disabled rows="7"></textarea>
   </section>

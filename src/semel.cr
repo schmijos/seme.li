@@ -27,14 +27,18 @@ before_get "/" do |env|
     CSP
 end
 
+# Landing page for Alice with the form to create a secret.
 get "/" do
   render "src/views/new.ecr", "src/views/layout.ecr"
 end
 
+# Landing page for Bob with the button to consume a secret.
+# Secrets are handled in the frontend via the URL fragment. So they are not part of path and query.
 get "/try" do
   render "src/views/try.ecr", "src/views/layout.ecr"
 end
 
+# Store a secret and return a URL for its consumption.
 post "/create" do |env|
   env.response.content_type = "application/json"
 
@@ -42,11 +46,15 @@ post "/create" do |env|
   expires_in_seconds = env.params.json["expires_in_seconds"].as(Int64)
 
   if ciphertext.size > MAX_CIPHERTEXT_LENGTH
-    halt env, status_code: 400, response: ({ errors: [{ status: "400", detail: "Maximum #{MAX_CIPHERTEXT_LENGTH} characters allowed." }] }.to_json)
+    halt env, status_code: 400, response: (
+      { errors: [{ status: "400", detail: "Maximum #{MAX_CIPHERTEXT_LENGTH} characters allowed." }] }.to_json
+    )
   end
 
   if expires_in_seconds > MAX_EXPIRES_IN_SECONDS
-    halt env, status_code: 400, response: ({ errors: [{ status: "400", detail: "Maximum expiriy time is #{MAX_EXPIRES_IN_SECONDS} seconds." }] }.to_json)
+    halt env, status_code: 400, response: (
+      { errors: [{ status: "400", detail: "Maximum expiriy time is #{MAX_EXPIRES_IN_SECONDS} seconds." }] }.to_json
+    )
   end
 
   secret_id = storage.put(ciphertext, Time.utc.to_unix + expires_in_seconds)
@@ -54,6 +62,7 @@ post "/create" do |env|
   { url: "https://#{env.request.headers["Host"]}/try##{secret_id}" }.to_json
 end
 
+# Consume one specific secret and delete all expired secrets from the database.
 delete "/consume/:id" do |env|
   env.response.content_type = "application/json"
 

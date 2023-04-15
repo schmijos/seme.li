@@ -7,6 +7,8 @@
 <main>
   <section id="form-new">
     <script id="script-lib">
+      // Here is the crypto library to retrieve and reveal secrets. It doesn't touch the DOM.
+
       async function encryptAndStore() {
         const { key, ciphertext } = await encryptLocally(plaintext());
         const { url } = await storeRemotely(ciphertext, expiresInSeconds());
@@ -55,6 +57,8 @@
     </script>
 
     <script id="script-dom">
+      // Here is the DOM tooling. It doesn't act on its own but should be triggered by inline event handlers.
+
       function plaintext()        { return document.getElementById('plaintext').value; }
       function expiresInSeconds() { return parseInt(document.getElementById('expires-in-seconds').value); }
       function showSharable(url)  {
