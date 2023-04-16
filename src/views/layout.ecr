@@ -79,19 +79,15 @@
       border-radius: 10px;
       box-sizing: border-box;
     }
+    input[type=text] {
+      margin-bottom: 12px;
+    }
     select {
       cursor: pointer;
       height: 51px;
-      outline: none;
     }
     textarea {
       resize: vertical;
-      outline: none;
-    }
-    select:focus, textarea:focus {
-      color: #000000;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.9);
-      transition: box-shadow 0.3s ease-in-out;
     }
     button {
       color: white;
@@ -129,6 +125,15 @@
     }
     #form-try-header svg {
       transform: rotate(180deg);
+    }
+
+    input[type="text"], select, textarea {
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      color: #000000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.9);
+      transition: box-shadow 0.3s ease-in-out;
     }
 
     select {

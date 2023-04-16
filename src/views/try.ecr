@@ -73,18 +73,22 @@
 
     <div id="secret-key-container" style="display: none">
       <!-- This input can be used to manually provide the secret key if this document is not considered trustworthy -->
-      <label for="secret-key">Secret key</label>
+      <label for="secret-key">Enter secret key</label>
       <input type="text" id="secret-key">
     </div>
 
     <button id="submit" onclick="consumeAndDecrypt()">
-      Reveal secret!
+      Reveal secret
     </button>
   </section>
 
   <section id="plaintext-container" style="display: none">
     <!-- There's deliverately no copy-to-clipboard button here. No JavaScript should be needed after reveal -->
-    <label for="plaintext">Plaintext</label>
+    <label for="plaintext">
+      Secret
+      <br>
+      <span>It can be seen only once.</span>
+    </label>
     <textarea id="plaintext" disabled rows="7"></textarea>
   </section>
 </main>
