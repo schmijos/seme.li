@@ -47,4 +47,4 @@ bin/run
 
 ## License
 
-2021-2022 Copyright by Josua Schmid, published under the AGPL license
+2021-2023 Copyright by Josua Schmid, published under the AGPL license
