@@ -37,6 +37,17 @@ bin/check
 bin/run
 ```
 
+## FAQ
+
+* **Why is there no file upload support?**
+
+  File upload capabilities would increase demands for the backend and complexity in general.
+  The idea is rather that you encrypt a file and send it through an insecure channel.
+  You would then only share the encryption key via seme.li.
+  
+  If you really want file upload support, you can add it yourself.
+  Have a look at [this PR](https://github.com/schmijos/seme.li/pull/3).
+
 ## Contributing
 
 1. Fork it (<https://github.com/schmijos/seme.li>)
