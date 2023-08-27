@@ -17,7 +17,7 @@ Installation is as easy as clicking this button.
 > Be aware though that you'll
 [loose your SQLite database often](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem)
 if you use Heroku. You may want to hook into a Postgres database
-or use [Dokku with a volume](https://dokku.com/docs/advanced-usage/persistent-storage/).
+or use [Dokku with a volume](https://dokku.com/docs/advanced-usage/persistent-storage/)
 on your own server.
 Sticking to a SQLite database also means that you can run on 1 "dyno" only.
 
