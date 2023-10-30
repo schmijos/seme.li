@@ -43,10 +43,13 @@ bin/run
 
   File upload capabilities would increase demands for the backend and complexity in general.
   The idea is rather that you encrypt a file and send it through an insecure channel.
-  You would then only share the encryption key via seme.li.
+  You would then only share the encryption key via <https://seme.li>.
   
   If you really want file upload support, you can add it yourself.
   Have a look at [this PR](https://github.com/schmijos/seme.li/pull/3).
+
+  Alternatively you can use one of the more bloated alternatives
+  out there like <https://wormhole.app/> or <https://www.transferly.swiss/>.
 
 ## Contributing
 
