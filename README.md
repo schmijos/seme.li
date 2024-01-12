@@ -48,8 +48,11 @@ bin/run
   If you really want file upload support, you can add it yourself.
   Have a look at [this PR](https://github.com/schmijos/seme.li/pull/3).
 
-  Alternatively you can use one of the more bloated alternatives
-  out there like [wormhole.app](https://wormhole.app/) or [transferly.swiss](https://www.transferly.swiss/).
+  Alternatively I know about the following more bloated (less auditable) alternatives.
+  They all support file uploads:
+  * [wormhole.app](https://wormhole.app/)
+  * [hemmelig.app](https://hemmelig.app)
+  * [transferly.swiss](https://www.transferly.swiss/)
 
 ## Contributing
 
