@@ -63,8 +63,8 @@ bin/run
   ```
   
   The resulting (big) file `folder.zip.enc` would be transferred on an insecure channel
-  like email together with the instruction to decrypt the file while the used password
-  would go over seme.li.
+  like email together with the instruction to decrypt the file while the password
+  goes over seme.li.
   
   Use this to decrypt the file
   
