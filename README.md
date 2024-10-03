@@ -54,6 +54,27 @@ bin/run
   * [hemmelig.app](https://hemmelig.app)
   * [transferly.swiss](https://www.transferly.swiss/)
 
+* **How should I encrypt a file to be transferred on an insecure channel?**
+
+  You can use OpenSSL tooling like this
+
+  ```sh
+  openssl enc -aes-256-cbc -salt -pbkdf2 -iter 20000 -in folder.zip -out folder.zip.enc
+  ```
+  
+  The resulting (big) file `folder.zip.enc` would be transferred on an insecure channel
+  like email together with the instruction to decrypt the file while the used password
+  would go over seme.li.
+  
+  Use this to decrypt the file
+  
+  ```sh
+  openssl enc -d -aes-256-cbc -salt -pbkdf2 -iter 20000 -in folder.zip.enc -out folder.zip
+  ```
+  
+  **Attention:** Normal ZIP encryption is not secure and can be broken by a script kiddie
+  in a matter of seconds. The above used OpenSSL approach is way better.
+
 ## Contributing
 
 1. Fork it (<https://github.com/schmijos/seme.li>)
@@ -64,4 +85,4 @@ bin/run
 
 ## License
 
-2021-2023 Copyright by Josua Schmid, published under the AGPL license
+2021-2024 Copyright by Josua Schmid, published under the AGPL license
