@@ -1,3 +1,4 @@
+name: Run Tests
 on:
   push:
   pull_request:
@@ -10,8 +11,6 @@ jobs:
     steps:
       - name: Download source
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install Dependencies
         run: |
           apt-get update
@@ -25,9 +24,3 @@ jobs:
         run: shards check || shards install        
       - name: Run tests
         run: KEMAL_ENV=test crystal spec
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          git_remote_url: 'ssh://dokku@${{ secrets.SSH_SERVER_IP }}:22/semeli'
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}        
-          branch: main
