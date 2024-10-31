@@ -30,3 +30,4 @@ jobs:
         with:
           git_remote_url: 'ssh://dokku@${{ secrets.SSH_SERVER_IP }}:22/semeli'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}        
+          branch: main
