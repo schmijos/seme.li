@@ -1,0 +1,21 @@
+version: v1.0
+name: main-deploy
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+
+blocks:
+  - name: main-deploy
+    task:
+      secrets:
+        - name: hetzner
+      env_vars:
+        - name: DOKKU_APP_NAME
+          value: semeli
+      jobs:
+        - name: main-deploy
+          commands:
+            - checkout --use-cache
+            - git remote add dokku dokku@$HETZNER_SERVER_IP:$DOKKU_APP_NAME            
+            - git push dokku -f $SEMAPHORE_GIT_BRANCH:main            
