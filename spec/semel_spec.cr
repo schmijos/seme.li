@@ -9,12 +9,12 @@ describe "Semel" do
 
   it "renders the home page for entering secrets" do
     get "/"
-    response.body.should contain "Semel"
+    response.body.should contain "Renuo"
   end
 
   it "renders the page to retrieve a secret" do
     get "/try"
-    response.body.should contain "Semel"
+    response.body.should contain "Renuo"
   end
 
   # it "renders json with the link to the secret" do
