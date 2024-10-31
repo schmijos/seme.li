@@ -3,12 +3,12 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  container:
+    image: crystallang/crystal:latest
     steps:
       - name: Download source
         uses: actions/checkout@v2
-      - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1
+      - name: Install packages
+        run: sudo apt-get -qy install libsqlite3-dev        
       - name: Run tests
         run: crystal spec
