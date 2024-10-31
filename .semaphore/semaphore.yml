@@ -3,9 +3,7 @@ name: semeli
 agent:
   machine:
     type: e1-standard-2
-  containers:
-    - name: main
-      image: semaphoreci/alpine:[version]
+    os_image: ubuntu2004
 auto_cancel:
   running:
     when: 'true'
