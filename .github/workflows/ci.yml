@@ -10,11 +10,6 @@ jobs:
     steps:
       - name: Download source
         uses: actions/checkout@v4
-      - name: Install sqlite
-        uses: actions/setup-sqlite@v1
-        with:
-          sqlite-version: 3.40.0
-          sqlite-year: 2022
       - name: Cache shards
         uses: actions/cache@v4
         with:
