@@ -29,7 +29,7 @@ blocks:
       jobs:
         - name: tests
           commands:
-            - snap install crystal --classic
+            - sudo snap install crystal --classic
             - crystal spec
 promotions:  
   - name: main
