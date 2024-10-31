@@ -10,6 +10,10 @@ jobs:
     steps:
       - name: Download source
         uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsqlite3-dev        
       - name: Cache shards
         uses: actions/cache@v4
         with:
