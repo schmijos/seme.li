@@ -23,16 +23,16 @@ blocks:
       env_vars:        
         - name: LANG
           value: de_CH.UTF-8
+        - name: KEMAL_ENV
+          value: test  
       prologue:
         commands:
           - checkout --use-cache          
       jobs:
         - name: tests
           commands:
-            - sudo apt-get update
-            - sudo apt-get install -y asdf
-            - sudo apt-get install -y crystal
-            - bin/check
+            - snap install crystal --classic
+            - crystal spec
 promotions:  
   - name: main
     pipeline_file: main-deploy.yml
