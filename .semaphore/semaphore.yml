@@ -5,7 +5,7 @@ agent:
     type: e1-standard-2
   containers:
     - name: main
-      image: crystallang/crystal:latest
+      image: semaphoreci/alpine:[version]
 auto_cancel:
   running:
     when: 'true'

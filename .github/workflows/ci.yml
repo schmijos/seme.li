@@ -3,8 +3,10 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  container:
-    image: crystallang/crystal:latest
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:latest
     steps:
       - name: Download source
         uses: actions/checkout@v2
