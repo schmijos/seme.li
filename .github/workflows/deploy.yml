@@ -1,0 +1,25 @@
+name: Deployment
+concurrency: production
+on:
+  workflow_run:
+    workflows: [Run Tests]
+    types:
+      - completed
+    branches: 
+      - main
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:latest
+    steps:
+      - name: Download source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: 'ssh://dokku@${{ secrets.SSH_SERVER_IP }}:22/semeli'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}        
+          branch: main
