@@ -10,7 +10,6 @@ auto_cancel:
 fail_fast:
   cancel:
     when: "branch != 'main'"
-
 blocks:
   - name: tests
     execution_time_limit:
@@ -22,13 +21,14 @@ blocks:
         - name: LANG
           value: de_CH.UTF-8
         - name: KEMAL_ENV
-          value: test  
-      prologue:
-        commands:
-          - checkout --use-cache          
+          value: test     
       jobs:
         - name: tests
           commands:
+            - checkout --use-cache   
+            - sudo apt-get install gcc pkg-config git tzdata \
+                           libpcre2-dev libevent-dev libyaml-dev \
+                           libgmp-dev libssl-dev libxml2-dev
             - sudo snap install crystal --classic
             - shards check || shards install
             - crystal spec
