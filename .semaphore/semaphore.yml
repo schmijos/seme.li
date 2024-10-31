@@ -30,6 +30,7 @@ blocks:
         - name: tests
           commands:
             - sudo snap install crystal --classic
+            - shards check || shards install
             - crystal spec
 promotions:  
   - name: main
