@@ -3,7 +3,7 @@ name: semeli
 agent:
   machine:
     type: e1-standard-2
-    os_image: ubuntu2004
+    os_image: ubuntu2204
 auto_cancel:
   running:
     when: 'true'
@@ -27,7 +27,9 @@ blocks:
           commands:
             - checkout --use-cache   
             - sudo apt-get update
-            - sudo apt-get install gcc pkg-config git tzdata libyaml-dev libxml2-dev
+            - sudo apt-get install gcc pkg-config git tzdata \
+                           libevent-dev libyaml-dev \
+                           libssl-dev libxml2-dev
             - sudo snap install crystal --classic
             - shards check || shards install
             - crystal spec
