@@ -1,0 +1,37 @@
+version: "v1.0"
+name: semeli
+agent:
+  machine:
+    type: e2-standard-2
+    os_image: ubuntu2204
+auto_cancel:
+  running:
+    when: 'true'
+fail_fast:
+  cancel:
+    when: "branch != 'main'"
+
+blocks:
+  - name: tests
+    execution_time_limit:
+      minutes: 5    
+    task:
+      secrets:
+        - name: semeli
+      env_vars:        
+        - name: LANG
+          value: de_CH.UTF-8
+      prologue:
+        commands:
+          - checkout --use-cache
+          - sudo snap install crystal --classic
+          - sudo apt-get install -y gcc pkg-config git tzdata libpcre2-dev libevent-dev libyaml-dev libgmp-dev libssl-dev libxml2-dev
+      jobs:
+        - name: tests
+          commands:
+            - bin/check
+promotions:  
+  - name: main
+    pipeline_file: main-deploy.yml
+    auto_promote:
+      when: "result = 'passed' and branch = 'main'"
