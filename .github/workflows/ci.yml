@@ -10,7 +10,12 @@ jobs:
     steps:
       - name: Download source
         uses: actions/checkout@v2
-      - name: Install packages
-        run: sudo apt-get -qy install libsqlite3-dev        
+      - name: Cache shards
+        uses: actions/cache@v2
+        with:
+          path: lib
+          key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
+      - name: Install shards
+        run: shards check || shards install        
       - name: Run tests
         run: crystal spec
