@@ -1,0 +1,24 @@
+version: v1.0
+name: main-deploy
+agent:
+  machine:
+    type: e2-standard-2
+    os_image: ubuntu2204
+
+blocks:
+  - name: main-deploy
+    task:
+      secrets:
+        - name: semeli
+      env_vars:
+        - name: DOKKU_APP_NAME
+          value: semeli
+        - name: GIT_SSH_COMMAND
+          value: ssh -i /home/semaphore/.ssh/hetzner-github.key -o StrictHostKeyChecking=no
+      jobs:
+        - name: main-deploy
+          commands:
+            - checkout --use-cache
+            - git remote add dokku ssh://dokku@$DOKKU_SERVER_IP:22/$DOKKU_APP_NAME
+            - chmod 600 /home/semaphore/.ssh/hetzner-github.key
+            - git push dokku -f $SEMAPHORE_GIT_BRANCH:main
