@@ -9,9 +9,8 @@ _Semper Semel Simplex!_
 ## Run your own
 
 This is a _12factor_ app using the Apt and Crystal Heroku buildpacks.
-Installation is as easy as clicking this button. 
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+Feel free to fork it and run it by yourself.
+I'd be glad if you could bring back nice changes to this repo in a pull request.
 
 > **Warning**
 > Be aware though that you'll
