@@ -130,7 +130,7 @@
         <li>Check the browser inspector to see that only a single legit network request is made by this page.</li>
         <li>Be aware that the hash part of an URL is <strong>not</strong> submitted to the server by the browser
           when you request a web page.
-          It contains ID and encryption key (like <code>https://secrets.renuoapp.ch/try#&ltID&gt:&ltsecret&gt</code>).
+          It contains ID and encryption key (like <code>https://secrets.renuo.ch/try#&ltID&gt:&ltsecret&gt</code>).
           The ID is used to query the correct record from the backend. The encryption key stays on your machine.</li>
         <li>Theoretically we could show the consumer of the secret a custom tailored web page to steal the secret part
           of the URL. To omit this risk, you can split the generated link at the colon. If a secret link
@@ -138,7 +138,7 @@
           In that case, the receiver can inspect the page's source code before entering the secret encryption key.</li>
         <li>You actually have to trust us with the expiry feature. We could simply keep the ciphertext forever.</li>
         <li>You can run your own backend. Find the source of this page on
-          <a href="https://github.com/schmijos/seme.li">GitHub</a>.</li>
+          <a href="https://github.com/renuo/seme.li">GitHub</a>.</li>
       </ul>
     </details>
   </section>

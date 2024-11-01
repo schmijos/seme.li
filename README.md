@@ -1,6 +1,6 @@
 # Semel Secure Message
 
-Visit [seme.li](https://seme.li) to share expiring secrets once.
+Visit [secrets.renuo.ch](https://secrets.renuo.ch) to share expiring secrets once.
 Encryption and decryption is done exclusively in the browser.
 No secret reaches the server.
 
