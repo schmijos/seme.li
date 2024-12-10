@@ -9,6 +9,7 @@ MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https:
 
 before_all do |env|
   env.response.headers["Access-Control-Allow-Origin"] = "*"
+  env.response.headers["X-Content-Type-Options"] = "nosniff"
 end
 
 before_get "/" do |env|
