@@ -7,7 +7,7 @@
 <main>
   <section id="form-new">
     <script id="script-lib">
-      // Here is the crypto library to retrieve and reveal secrets. It doesn't touch the DOM.
+      // Here is the crypto library to create and store secrets.
 
       async function encryptAndStore() {
         const { key, ciphertext } = await encryptLocally(plaintext());
@@ -23,7 +23,9 @@
         );
 
         const ciphertext = await window.crypto.subtle.encrypt(
-          // Using fixed IV because every key is used only once
+          // Using a fixed and known IV is ok because:
+          // - every key is used only once
+          // - GCM counter is wide enough (32bit or 64GiB of plaintext)
           { name: "AES-GCM", iv: new Uint8Array(12) },
           key,
           (new TextEncoder).encode(plaintext)

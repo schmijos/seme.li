@@ -7,7 +7,7 @@
 <main>
   <section id="form-try">
     <script id="script-lib">
-      // Here is the crypto library to create and store secrets. It doesn't touch the DOM.
+      // Here is the crypto library to retrieve and reveal secrets.
 
       async function consumeAndDecrypt() {
         const { ciphertext } = await consumeRemotely(secretIdFromHash());

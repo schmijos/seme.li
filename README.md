@@ -84,4 +84,4 @@ bin/run
 
 ## License
 
-2021-2024 Copyright by Josua Schmid, published under the AGPL license
+2021-2025 Copyright by Josua Schmid, published under the AGPL license
