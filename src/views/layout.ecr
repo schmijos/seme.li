@@ -6,6 +6,28 @@
   <title>Semel Secure Message</title>
   <link rel="icon" href="data:image/svg+xml,<%= URI.encode_path(render("src/images/logo.svg")) %>" type="image/svg+xml" />
   <style>
+    /* Default */
+    :root {
+      --header-margin: 121px 0 81px 0;
+      --footer-margin: 121px 16px;
+      --gutter-width: 16px;
+      --label-margin: 50px 0 10px 0;
+      --explanation-margin: 100px 0 0 0;
+      --body-grid-template-rows: auto auto auto; /* center vertically */
+    }
+
+    /* Mobile */
+    @media (max-width: 639px) {
+      :root {
+        --header-margin: 24px 12px;
+        --footer-margin: 24px 12px;
+        --gutter-width: 12px;
+        --label-margin: 16px 0 8px 0;
+        --explanation-margin: 32px 0 0 0;
+        --body-grid-template-rows: min-content 1fr auto; /* "bring to top", header with fixed height */
+      }
+    }
+
     * {
       box-sizing: border-box;
       font-family: "Arial", sans-serif;
@@ -20,13 +42,14 @@
       height: 100vh;
 
       display: grid;
-      grid-template-columns: auto minmax(100px, 684px) auto;
-      grid-template-rows: auto auto auto;
+      grid-template-columns: var(--gutter-width) minmax(100px, 684px) var(--gutter-width);
+      grid-template-rows: var(--body-grid-template-rows);
       grid-template-areas:
         "header header header"
         ".      main   .     "
         "footer footer footer";
       justify-items: center;
+      justify-content: center;
     }
 
     header {
@@ -34,7 +57,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 121px 0 81px 0;
+      margin: var(--header-margin);
+      text-align: center;
+      text-wrap: balance;
     }
     main {
       grid-area: main;
@@ -43,7 +68,7 @@
     footer {
       grid-area: footer;
       align-self: end;
-      margin: 121px 0;
+      margin: var(--footer-margin);
     }
 
     h1 {
@@ -67,8 +92,7 @@
       color: rgba(0, 0, 0, 1.0);
       display: block;
       font-size: 18px;
-      margin-top: 50px;
-      margin-bottom: 10px;
+      margin: var(--label-margin)
     }
 
     input[type=text], select, textarea, button {
@@ -109,7 +133,7 @@
       font-family: monospace;
     }
     #explanation {
-      margin-top: 100px;
+      margin: var(--explanation-margin);
     }
 
     summary {
