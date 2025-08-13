@@ -11,6 +11,13 @@
 
       async function encryptAndStore() {
         const { key, ciphertext } = await encryptLocally(plaintext());
+        const isInputTooLong = to_base64(ciphertext).length > <%= max_ciphertext_length %>;
+        if (isInputTooLong) {
+          displayError('Your input is too long!');
+          hideSharable();
+          return;
+        }
+        hideError();
         const { url } = await storeRemotely(ciphertext, expiresInSeconds());
         showSharable(`${url}:${to_base64(key)}`);
       }
@@ -67,6 +74,18 @@
         document.getElementById('sharable').innerText = url;
         document.getElementById('sharable-container').style.removeProperty('display');
       }
+      function hideSharable() {
+
+        document.getElementById('sharable').innerText = '';
+        document.getElementById('sharable-container').style.display = 'none';
+      }
+      function displayError(error) {
+        document.getElementById('error').innerHTML = error;
+        document.getElementById('error-container').style.removeProperty('display');
+      }
+      function hideError() {
+        document.getElementById('error-container').style.display = 'none';
+      }
       function copyUrlToClipboard(copier) {
         const sharable = document.getElementById('sharable')
         sharable.select();
@@ -114,6 +133,10 @@
     </label>
     <textarea id="sharable" disabled></textarea>
     <button onclick="copyUrlToClipboard(this)">Copy URL to clipboard</button>
+  </section>
+
+  <section id="error-container" style="display: none">
+  <p id="error"></p>
   </section>
 
   <section id="explanation">
