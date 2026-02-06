@@ -52,7 +52,7 @@ post "/create" do |env|
 
   if ciphertext.size > MAX_CIPHERTEXT_LENGTH
     halt env, status_code: 400, response: (
-      { errors: [{ status: "400", detail: "Maximum #{MAX_CIPHERTEXT_LENGTH} characters allowed." }] }.to_json
+      { errors: [{ status: "400", detail: "Ciphertext uses #{ciphertext.size}/#{MAX_CIPHERTEXT_LENGTH} codepoints. Please reduce plaintext size." }] }.to_json
     )
   end
 
