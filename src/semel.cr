@@ -34,7 +34,6 @@ end
 
 # Landing page for Alice with the form to create a secret.
 get "/" do
-  max_ciphertext_length = MAX_CIPHERTEXT_LENGTH
   render "src/views/new.ecr", "src/views/layout.ecr"
 end
 
