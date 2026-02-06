@@ -11,15 +11,15 @@
 
       async function encryptAndStore() {
         const { key, ciphertext } = await encryptLocally(plaintext());
-        const isInputTooLong = to_base64(ciphertext).length > <%= max_ciphertext_length %>;
-        if (isInputTooLong) {
-          displayError('Your input is too long!');
-          hideSharable();
-          return;
+        const { url, errors } = await storeRemotely(ciphertext, expiresInSeconds());
+
+        if(url) {
+          showSharable(`${url}:${to_base64(key)}`);
         }
-        hideError();
-        const { url } = await storeRemotely(ciphertext, expiresInSeconds());
-        showSharable(`${url}:${to_base64(key)}`);
+
+        if(errors) {
+          showError(errors.map((e) => e.detail).join(", "));
+        }
       }
 
       async function encryptLocally(plaintext) {
@@ -75,15 +75,15 @@
         document.getElementById('sharable-container').style.removeProperty('display');
       }
       function hideSharable() {
-
         document.getElementById('sharable').innerText = '';
         document.getElementById('sharable-container').style.display = 'none';
       }
-      function displayError(error) {
-        document.getElementById('error').innerHTML = error;
+      function showError(error) {
+        document.getElementById('error').innerText = error;
         document.getElementById('error-container').style.removeProperty('display');
       }
       function hideError() {
+        document.getElementById('error').innerText = '';
         document.getElementById('error-container').style.display = 'none';
       }
       function copyUrlToClipboard(copier) {
@@ -99,7 +99,7 @@
     </script>
 
     <label for="plaintext">Secret to share</label>
-    <textarea id="plaintext" placeholder="My secret…" rows="5"></textarea>
+    <textarea id="plaintext" placeholder="My secret…" rows="5" onchange="hideSharable(); hideError()"></textarea>
 
     <div style="display: flex; align-items: flex-end; column-gap: 20px">
       <div style="flex-basis: 0; flex-grow: 1">
