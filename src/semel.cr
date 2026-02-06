@@ -4,7 +4,11 @@ require "./storage"
 serve_static false
 
 storage = Storage.new(ENV["KEMAL_ENV"]? || "development")
+
+# Ciphertext expires after this amount of seconds
 MAX_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 30 # 30 days
+
+# Maximum allowed codepoints in ciphertext
 MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https://t5k.org/curios/page.php?number_id=953
 
 before_all do |env|
