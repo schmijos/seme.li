@@ -11,8 +11,15 @@
 
       async function encryptAndStore() {
         const { key, ciphertext } = await encryptLocally(plaintext());
-        const { url } = await storeRemotely(ciphertext, expiresInSeconds());
-        showSharable(`${url}:${to_base64(key)}`);
+        const { url, errors } = await storeRemotely(ciphertext, expiresInSeconds());
+
+        if(url) {
+          showSharable(`${url}:${to_base64(key)}`);
+        }
+
+        if(errors) {
+          showError(errors.map((e) => e.detail).join(", "));
+        }
       }
 
       async function encryptLocally(plaintext) {
@@ -67,6 +74,18 @@
         document.getElementById('sharable').innerText = url;
         document.getElementById('sharable-container').style.removeProperty('display');
       }
+      function hideSharable() {
+        document.getElementById('sharable').innerText = '';
+        document.getElementById('sharable-container').style.display = 'none';
+      }
+      function showError(error) {
+        document.getElementById('error').innerText = error;
+        document.getElementById('error-container').style.removeProperty('display');
+      }
+      function hideError() {
+        document.getElementById('error').innerText = '';
+        document.getElementById('error-container').style.display = 'none';
+      }
       function copyUrlToClipboard(copier) {
         const sharable = document.getElementById('sharable')
         sharable.select();
@@ -80,7 +99,7 @@
     </script>
 
     <label for="plaintext">Secret to share</label>
-    <textarea id="plaintext" placeholder="My secret…" rows="5"></textarea>
+    <textarea id="plaintext" placeholder="My secret…" rows="5" onchange="hideSharable(); hideError()"></textarea>
 
     <div style="display: flex; align-items: flex-end; column-gap: 20px">
       <div style="flex-basis: 0; flex-grow: 1">
@@ -114,6 +133,10 @@
     </label>
     <textarea id="sharable" disabled></textarea>
     <button onclick="copyUrlToClipboard(this)">Copy URL to clipboard</button>
+  </section>
+
+  <section id="error-container" style="display: none">
+    <span id="error"></span>
   </section>
 
   <section id="explanation">
