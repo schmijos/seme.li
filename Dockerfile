@@ -8,9 +8,6 @@ COPY . .
 RUN shards install --production
 RUN crystal build src/semel.cr --release --no-debug  -o app
 
-RUN mkdir -p /app/data && chmod 777 /app/data
-VOLUME ["/app/data"]
-
 EXPOSE 3000
 
 CMD ["sh", "-c", "./app --port ${PORT:-3000}"]
