@@ -56,8 +56,9 @@
     <script id="script-dom">
       // Here is the DOM tooling. It doesn't act on its own but should be triggered by inline event handlers.
 
-      function secretIdFromHash()        { return location.hash.substring(1).split(':').filter(x => x)[0]; }
-      function secretKeyFromHash()       { return location.hash.substring(1).split(':').filter(x => x)[1]; }
+      function urlHashPart(i)            { return location.hash.substring(1).split(':').filter(x => x)[i]; }
+      function secretIdFromHash()        { return urlHashPart(0).match(/^[0-9a-f-]+$/)?.[0] || alert('Attention! Your link is invalid.'); }
+      function secretKeyFromHash()       { return urlHashPart(1); }
       function secretKeyFromInput()      { return document.getElementById('secret-key').value; }
       function showPlaintext(plaintext)  {
         document.getElementById('plaintext').value = plaintext;
