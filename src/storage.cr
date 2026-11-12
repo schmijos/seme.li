@@ -21,10 +21,10 @@ class Storage
 
   def consume(id : String) : String?
     @db.query_one?(
-      "DELETE FROM secrets WHERE id = ? AND expires_at > ? RETURNING ciphertext",
+      "DELETE FROM secrets WHERE id = ? RETURNING CASE WHEN expires_at > ? THEN ciphertext END",
       id,
       Time.utc.to_unix,
-      as: String
+      as: String?
     )
   end
 
