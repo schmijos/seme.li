@@ -27,14 +27,14 @@ describe Storage do
       storage = Storage.new("test")
       id = storage.put("BEEF1337", Time.utc.to_unix - 1)
       storage.consume(id).should eq nil
-      storage.size.should eq 1
+      storage.size.should eq 0
     end
 
     it "can NOT consume expiring" do
       storage = Storage.new("test")
       id = storage.put("BEEF1337", Time.utc.to_unix + 0)
       storage.consume(id).should eq nil
-      storage.size.should eq 1
+      storage.size.should eq 0
     end
 
     it "can NOT consume non-existing" do
