@@ -8,8 +8,9 @@ COPY . .
 RUN shards install --production
 RUN crystal build src/semel.cr --release --no-debug  -o app
 
-RUN mkdir -p /app/data && chmod 777 /app/data
+RUN mkdir -p /app/data && chown nobody /app/data
 VOLUME ["/app/data"]
+USER nobody
 
 ENV KEMAL_ENV=production
 EXPOSE 3000
