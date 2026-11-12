@@ -22,6 +22,11 @@ describe "Semel" do
     response.headers["Content-Security-Policy"]?.to_s.should contain "default-src 'none'"
   end
 
+  it "forbids other sites to embed the page" do
+    get "/"
+    response.headers["Content-Security-Policy"]?.to_s.should contain "frame-ancestors 'none'"
+  end
+
   # it "renders json with the link to the secret" do
   #   post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {"ciphertext": "XXX", "expires_in_seconds": 30}.to_json
   #   puts response.body
