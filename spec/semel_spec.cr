@@ -27,6 +27,23 @@ describe "Semel" do
     response.headers["Content-Security-Policy"]?.to_s.should contain "frame-ancestors 'none'"
   end
 
+  it "explains the codepoint limit for a slightly too long secret" do
+    post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {ciphertext: "A" * 2_000, expires_in_seconds: 60}.to_json
+    response.status_code.should eq 400
+    response.body.should contain "Please reduce plaintext size."
+  end
+
+  it "rejects a request too large to hold a secret" do
+    post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {ciphertext: "A" * 100_000, expires_in_seconds: 60}.to_json
+    response.status_code.should eq 413
+    response.body.should contain "Please reduce plaintext size."
+  end
+
+  it "rejects a request of unknown size" do
+    process_request HTTP::Request.new("POST", "/create", HTTP::Headers{"Content-Type" => "application/json"}, IO::Memory.new({ciphertext: "A" * 2_000, expires_in_seconds: 60}.to_json))
+    response.status_code.should eq 413
+  end
+
   # it "renders json with the link to the secret" do
   #   post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {"ciphertext": "XXX", "expires_in_seconds": 30}.to_json
   #   puts response.body
