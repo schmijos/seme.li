@@ -11,6 +11,9 @@ MAX_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 30 # 30 days
 # Maximum allowed codepoints in ciphertext
 MAX_CIPHERTEXT_LENGTH = 1_401 # Length of first illegal prime number, see https://t5k.org/curios/page.php?number_id=953
 
+# Maximum allowed bytes in a request body, checked before reading it
+MAX_REQUEST_BYTES = 65_536
+
 before_all do |env|
   env.response.headers["Access-Control-Allow-Origin"] = "*"
   env.response.headers["X-Content-Type-Options"] = "nosniff"
@@ -47,6 +50,12 @@ end
 # Store a secret and return a URL for its consumption.
 post "/create" do |env|
   env.response.content_type = "application/json"
+
+  if (env.request.content_length || UInt64::MAX) > MAX_REQUEST_BYTES
+    halt env, status_code: 413, response: (
+      { errors: [{ status: "413", detail: "Request exceeds #{MAX_REQUEST_BYTES} bytes. Please reduce plaintext size." }] }.to_json
+    )
+  end
 
   ciphertext = env.params.json["ciphertext"].as(String)
   expires_in_seconds = env.params.json["expires_in_seconds"].as(Int64)
