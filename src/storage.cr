@@ -20,15 +20,12 @@ class Storage
   end
 
   def consume(id : String) : String?
-    ciphertext = @db.query_one?(
-      "SELECT ciphertext FROM secrets WHERE id = ? AND expires_at > ?",
+    @db.query_one?(
+      "DELETE FROM secrets WHERE id = ? AND expires_at > ? RETURNING ciphertext",
       id,
       Time.utc.to_unix,
       as: String
     )
-
-    @db.exec "DELETE FROM secrets WHERE id = ?", id
-    ciphertext
   end
 
   def cut
