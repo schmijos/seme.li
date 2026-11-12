@@ -17,6 +17,11 @@ describe "Semel" do
     response.body.should contain "Semel"
   end
 
+  it "restricts the page to retrieve a secret with a CSP" do
+    get "/try"
+    response.headers["Content-Security-Policy"]?.to_s.should contain "default-src 'none'"
+  end
+
   # it "renders json with the link to the secret" do
   #   post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {"ciphertext": "XXX", "expires_in_seconds": 30}.to_json
   #   puts response.body
