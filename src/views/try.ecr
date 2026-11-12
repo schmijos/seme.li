@@ -9,8 +9,10 @@
     <script id="script-lib">
       // Here is the crypto library to retrieve and reveal secrets.
 
+      let ciphertext; // kept across clicks, so a mistyped key does not lose the secret
+
       async function consumeAndDecrypt() {
-        const { ciphertext } = await consumeRemotely(secretIdFromHash());
+        ciphertext ||= (await consumeRemotely(secretIdFromHash())).ciphertext;
 
         if(ciphertext) {
           const key = secretKeyFromHash() || secretKeyFromInput();
