@@ -27,6 +27,11 @@ describe "Semel" do
     response.headers["Content-Security-Policy"]?.to_s.should contain "frame-ancestors 'none'"
   end
 
+  it "does not let other sites read responses" do
+    get "/"
+    response.headers["Access-Control-Allow-Origin"]?.should be_nil
+  end
+
   it "explains the codepoint limit for a slightly too long secret" do
     post "/create", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {ciphertext: "A" * 2_000, expires_in_seconds: 60}.to_json
     response.status_code.should eq 400
