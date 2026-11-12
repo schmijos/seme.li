@@ -16,7 +16,7 @@ before_all do |env|
   env.response.headers["X-Content-Type-Options"] = "nosniff"
 end
 
-before_get "/" do |env|
+before_get do |env|
   # Some considerations about these rather loose CSP rules:
   # - All functionality is contained in the resulting HTML document.
   #   No network requests happen, except for `POST /create` and `DELETE /consume/:id`.
