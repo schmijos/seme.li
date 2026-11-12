@@ -29,6 +29,7 @@ before_get do |env|
     style-src 'unsafe-inline';
     connect-src 'self';
     img-src data:;
+    frame-ancestors 'none';
     CSP
 end
 
